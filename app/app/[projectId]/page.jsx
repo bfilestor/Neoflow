@@ -1,8 +1,8 @@
-import { GetProjectSeo } from '@/app/api/seo/GetTitles';
-import { GetProject } from '@/app/api/soloProjects/[id]/get'
-import Editor from '@/components/Tl/editor'
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { GetProjectSeo } from "@/app/api/seo/GetTitles";
+import { GetProject } from "@/app/api/soloProjects/[id]/get"
+import Editor from "@/components/Tl/editor"
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export async function generateMetadata({ params }) {
 
