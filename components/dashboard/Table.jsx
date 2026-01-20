@@ -11,7 +11,7 @@ export default async function LinksTable() {
             <TableTop total={projects.total}>
                 {projects.projects && (
                     projects.projects.map((project) => (
-                        <Cell project={project} />
+                        <Cell key={project.id} project={project} />
                     ))
                 )}
             </TableTop>

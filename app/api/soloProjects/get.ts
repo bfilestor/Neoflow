@@ -1,12 +1,17 @@
 import { getServerSession } from "next-auth"
-import { NextResponse } from "next/server"
 import { options } from "../auth/[...nextauth]/Options"
 import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
 export const GetProjects = async () => {
-    const { user: { id } }: any = await getServerSession(options)
+    const session: any = await getServerSession(options)
+    const id = session?.user?.id
+
+    if (!id) {
+        return { total: 0, projects: [] }
+    }
+
     const count = await prisma.project.count({
         where: {
             autherId: id,

@@ -1,4 +1,6 @@
 import { getServerSession } from 'next-auth'
+import { redirect } from "next/navigation"
+import { options } from "@/app/api/auth/[...nextauth]/Options"
 import CreateForm from "@/components/dashboard/team/CreateForm"
 import { Suspense } from 'react'
 
@@ -19,7 +21,12 @@ export default function page() {
 
 const LoaderUi = async () => {
 
-    const session = await getServerSession()
+    const session = await getServerSession(options)
+
+    if (!session?.user) {
+        redirect("/api/auth/signin")
+    }
+
     return (
         <>
             <div className="w-full p-7 border-b border-input lg:flex hidden">

@@ -4,6 +4,7 @@ import { Theme } from "@/components/providers/Theme"
 import Session from "@/components/providers/Session"
 import { Toaster } from "@/components/ui/sonner"
 import { Analytics } from "@vercel/analytics/react"
+import { options } from "@/app/api/auth/[...nextauth]/Options"
 
 export async function metadata() {
   return {
@@ -15,7 +16,7 @@ export async function metadata() {
 
 export default async function RootLayout({ children }) {
 
-  const session = await getServerSession()
+  const session = await getServerSession(options)
 
   return (
     <html lang="en">

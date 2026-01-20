@@ -6,7 +6,10 @@ const prisma = new PrismaClient()
 
 export const getTeam = async (teamId: any) => {
 
-    const { user: { id } }: any = await getServerSession(options)
+    const session: any = await getServerSession(options)
+    const id = session?.user?.id
+
+    if (!id) return []
 
     const team = await prisma.team.findMany({
         where: {
@@ -33,8 +36,10 @@ export const getTeam = async (teamId: any) => {
             memberShip: {
                 take: 3,
                 select: {
+                    id: true,
                     user: {
                         select: {
+                            id: true,
                             image: true,
                             name: true
                         }

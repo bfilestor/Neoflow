@@ -24,20 +24,21 @@ export const options: NextAuthOptions = {
             },
 
             async authorize(credentials) {
-                const user = await prisma.user.findUnique({
-                    where: {
-                        email: credentials.email
-                    }
-                });
-                if (user) {
-                    return user;
-                }
+                const email = credentials?.email?.trim()
+
+                if (!email) return null
+
+                const existingUser = await prisma.user.findUnique({
+                    where: { email }
+                })
+
+                if (existingUser) return existingUser
 
                 const newUser = await prisma.user.create({
                     data: {
-                        image: credentials?.image,
-                        email: credentials.email,
-                        name: credentials?.name
+                        email,
+                        name: credentials?.name ?? null,
+                        image: credentials?.image ?? null,
                     }
                 })
 
@@ -53,7 +54,8 @@ export const options: NextAuthOptions = {
             return session;
         },
         jwt: async ({ user, token }: any) => {
-            if (user) {
+            if (user?.id) {
+                token.sub = user.id;
                 token.uid = user.id;
             }
             return token;

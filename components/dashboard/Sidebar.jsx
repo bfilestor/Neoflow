@@ -1,5 +1,6 @@
 import { getTeam } from "@/app/api/team/getSide"
 import { getServerSession } from "next-auth"
+import { redirect } from "next/navigation"
 import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Settings, Users } from "lucide-react"
@@ -7,6 +8,7 @@ import { Button } from "../ui/button"
 import Tree from "./Side/Tree"
 import { ModeToggle } from "./Side/ThemeMode"
 import { Suspense } from "react"
+import { options } from "@/app/api/auth/[...nextauth]/Options"
 
 
 export default function Sidebar() {
@@ -15,8 +17,8 @@ export default function Sidebar() {
         <div className='h-full w-full flex flex-col items-center justify-center'>
             <div className='px-5 pt-6 pb-2 w-full flex gap-1 items-center justify-start '>
                 <svg className="scale-[0.5] " width="55" height="87" viewBox="0 0 55 87" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect className="stroke-primary/80" x="14.4954" y="0.998303" width="18" height="60" rx="9" transform="rotate(13 14.4954 0.998303)" stroke="black" stroke-width="5" />
-                    <rect className="stroke-primary/80" x="36.4954" y="22.9983" width="18" height="60" rx="9" transform="rotate(13 36.4954 22.9983)" stroke="black" stroke-width="5" />
+                    <rect className="stroke-primary/80" x="14.4954" y="0.998303" width="18" height="60" rx="9" transform="rotate(13 14.4954 0.998303)" stroke="black" strokeWidth="5" />
+                    <rect className="stroke-primary/80" x="36.4954" y="22.9983" width="18" height="60" rx="9" transform="rotate(13 36.4954 22.9983)" stroke="black" strokeWidth="5" />
                 </svg>
                 <h1 className='text-2xl font-semibold tracking-wider'>Neoflow</h1>
             </div>
@@ -78,7 +80,13 @@ const LoadUi = () => {
 const Loader = async () => {
 
     const team = await getTeam()
-    const { user } = await getServerSession()
+    const session = await getServerSession(options)
+
+    if (!session?.user) {
+        redirect("/api/auth/signin")
+    }
+
+    const { user } = session
 
     return (
         <>

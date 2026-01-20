@@ -47,9 +47,9 @@ const LoadTable = () => (
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {[...Array(6)].map(() => (<TableRow className="border-input">
-                        {[...Array(5)].map(() => (
-                            <TableCell>
+                    {[...Array(6)].map((_, rowIndex) => (<TableRow key={rowIndex} className="border-input">
+                        {[...Array(5)].map((_, cellIndex) => (
+                            <TableCell key={cellIndex}>
                                 <div className="w-full p-2 rounded bg-primary/10 animate-pulse" />
                             </TableCell>
                         ))}

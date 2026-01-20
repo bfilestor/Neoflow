@@ -97,12 +97,12 @@ const LoadUi = () => {
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
-                                        {[...Array(4)].map(() => (<TableRow className="border-input">
-                                            <TableCell>
+                                        {[...Array(4)].map((_, rowIndex) => (<TableRow key={rowIndex} className="border-input">
+                                            <TableCell key="avatar">
                                                 <div className="w-10 h-10 rounded-full bg-primary/10 animate-pulse" />
                                             </TableCell>
-                                            {[...Array(5)].map(() => (
-                                                <TableCell>
+                                            {[...Array(5)].map((_, cellIndex) => (
+                                                <TableCell key={cellIndex}>
                                                     <div className="w-full p-2 rounded bg-primary/10 animate-pulse" />
                                                 </TableCell>
                                             ))}

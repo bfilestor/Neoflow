@@ -8,7 +8,12 @@ const prisma = new PrismaClient()
 
 export const POST = async(request: Request) => {
 
-    const { user: { id } }: any = await getServerSession(options)
+    const session: any = await getServerSession(options)
+    const id = session?.user?.id
+
+    if (!id) {
+        return NextResponse.json({ success: false }, { status: 401 })
+    }
     const { projectId } = await request.json()
 
 

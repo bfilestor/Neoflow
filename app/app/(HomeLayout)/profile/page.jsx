@@ -2,6 +2,8 @@ import { User } from 'lucide-react'
 import { getServerSession } from 'next-auth'
 import { Suspense } from 'react'
 import Profile from "@/components/extra/Profile"
+import { redirect } from "next/navigation"
+import { options } from "@/app/api/auth/[...nextauth]/Options"
 
 export async function metadata() {
   return {
@@ -30,7 +32,11 @@ export default async function page() {
 
 const Loader = async () => {
 
-  const session = await getServerSession()
+  const session = await getServerSession(options)
+
+  if (!session?.user) {
+    redirect("/api/auth/signin")
+  }
 
   return (
     <Profile user={session} />

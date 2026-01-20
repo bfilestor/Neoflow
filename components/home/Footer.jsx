@@ -8,8 +8,8 @@ export const Footer = () => {
                 <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                 <div className='flex gap-1 items-center justify-start '>
                     <svg className="" width="30" height="30" viewBox="0 0 55 87" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect className="stroke-primary/80" x="14.4954" y="0.998303" width="18" height="60" rx="9" transform="rotate(13 14.4954 0.998303)" stroke="black" stroke-width="5" />
-                        <rect className="stroke-primary/80" x="36.4954" y="22.9983" width="18" height="60" rx="9" transform="rotate(13 36.4954 22.9983)" stroke="black" stroke-width="5" />
+                        <rect className="stroke-primary/80" x="14.4954" y="0.998303" width="18" height="60" rx="9" transform="rotate(13 14.4954 0.998303)" stroke="black" strokeWidth="5" />
+                        <rect className="stroke-primary/80" x="36.4954" y="22.9983" width="18" height="60" rx="9" transform="rotate(13 36.4954 22.9983)" stroke="black" strokeWidth="5" />
                     </svg>
                     <h1 className='text-base font-semibold tracking-wider'>Neoflow</h1>
                 </div>

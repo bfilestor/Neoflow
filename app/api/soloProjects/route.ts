@@ -8,13 +8,31 @@ import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient()
 
 export const POST = async () => {
-    const { user: { id } }: any = await getServerSession(options)
+    const session: any = await getServerSession(options)
+
+    if (!session?.user?.email) {
+        return NextResponse.json({ state: "unauthorized" }, { status: 401 })
+    }
+
+    const userId = session?.user?.id
+    const userEmail = session.user.email
 
     const project = await prisma.project.create({
         data: {
             title: `Untitled-${Randrom.generate(7)}`,
-            autherId: id,
-            isSolo: true
+            isSolo: true,
+            auther: userId
+                ? { connect: { id: userId } }
+                : {
+                    connectOrCreate: {
+                        where: { email: userEmail },
+                        create: {
+                            email: userEmail,
+                            name: session?.user?.name ?? null,
+                            image: session?.user?.image ?? null,
+                        },
+                    },
+                },
         }
     })
 

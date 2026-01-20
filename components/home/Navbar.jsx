@@ -1,18 +1,24 @@
 "use client"
-import { Github, MessageCircle, Sun, Moon } from "lucide-react";
+import { Github, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 export const Navbar = () => {
-    const { theme, setTheme } = useTheme();
+    const { resolvedTheme, setTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     return (
         <nav className="border-b border-input sticky top-0">
             <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
                 <div className='flex gap-1 items-center justify-start '>
                     <svg className="" width="30" height="30" viewBox="0 0 55 87" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect className="stroke-primary/80" x="14.4954" y="0.998303" width="18" height="60" rx="9" transform="rotate(13 14.4954 0.998303)" stroke="black" stroke-width="5" />
-                        <rect className="stroke-primary/80" x="36.4954" y="22.9983" width="18" height="60" rx="9" transform="rotate(13 36.4954 22.9983)" stroke="black" stroke-width="5" />
+                        <rect className="stroke-primary/80" x="14.4954" y="0.998303" width="18" height="60" rx="9" transform="rotate(13 14.4954 0.998303)" stroke="black" strokeWidth="5" />
+                        <rect className="stroke-primary/80" x="36.4954" y="22.9983" width="18" height="60" rx="9" transform="rotate(13 36.4954 22.9983)" stroke="black" strokeWidth="5" />
                     </svg>
                     <h1 className='text-base font-semibold tracking-wider'>Neoflow</h1>
                 </div>
@@ -29,10 +35,19 @@ export const Navbar = () => {
                     <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                        disabled={!mounted}
+                        onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
                         className="hover:bg-transparent"
                     >
-                        {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                        {mounted ? (
+                            resolvedTheme === "dark" ? (
+                                <Sun className="h-5 w-5" />
+                            ) : (
+                                <Moon className="h-5 w-5" />
+                            )
+                        ) : (
+                            <span className="h-5 w-5" />
+                        )}
                     </Button>
                     <div className="h-5 border-r border-input ml-4 mr-6" />
                     <a

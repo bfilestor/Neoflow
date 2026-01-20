@@ -26,7 +26,7 @@ export default function Editor({ id, project, readmode }) {
 
     const [loadingState, setLoadingState] = useState({ status: 'loading' })
     const [store] = useState(() => createTLStore({ shapeUtils: [...customShapeUtils, ...defaultShapeUtils] }))
-    const { theme } = useTheme()
+    const { resolvedTheme } = useTheme()
 
     const handleSave = async () => {
 
@@ -103,7 +103,7 @@ export default function Editor({ id, project, readmode }) {
                     onMount={(editor) => {
                         editor.updateInstanceState({ isReadonly: readmode })
                     }}
-                    inferDarkMode={theme === theme === "light" ? "light" : "dark"}>
+                    inferDarkMode={resolvedTheme !== "light"}>
                     <Tools project={project} id={id} handleSave={handleSave} readmode={readmode} />
                 </Tldraw>
             </div>
@@ -122,8 +122,8 @@ const Tools = track(({ handleSave, readmode }) => {
     const [openCode, setOpenCode] = useState(false)
 
     useEffect(() => {
-        editor.zoomToContent()
-    }, [])
+        editor?.zoomToFit?.()
+    }, [editor])
 
 
     return (
@@ -139,8 +139,8 @@ const Tools = track(({ handleSave, readmode }) => {
                         <div className="w-full flex items-start justify-between">
                             <Link href={"/app"} className=' w-max gap-2 flex g items-center justify-between bg-muted/10 p-2.5  rounded-xl border border-input px-4 -translate-x-12 pointer-events-auto'>
                                 <svg className="" width="20" height="20" viewBox="0 0 55 87" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect className="stroke-primary/80" x="14.4954" y="0.998303" width="18" height="60" rx="9" transform="rotate(13 14.4954 0.998303)" stroke="black" stroke-width="5" />
-                                    <rect className="stroke-primary/80" x="36.4954" y="22.9983" width="18" height="60" rx="9" transform="rotate(13 36.4954 22.9983)" stroke="black" stroke-width="5" />
+                                    <rect className="stroke-primary/80" x="14.4954" y="0.998303" width="18" height="60" rx="9" transform="rotate(13 14.4954 0.998303)" stroke="black" strokeWidth="5" />
+                                    <rect className="stroke-primary/80" x="36.4954" y="22.9983" width="18" height="60" rx="9" transform="rotate(13 36.4954 22.9983)" stroke="black" strokeWidth="5" />
                                 </svg>
                                 <h1 className='text-sm font-semibold tracking-wider'>Neoflow</h1>
                             </Link>
