@@ -2,16 +2,19 @@ const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
 
-function getPrismaGenerateCommand() {
-  const binName = process.platform === "win32" ? "prisma.cmd" : "prisma";
-  return path.join(__dirname, "..", "node_modules", ".bin", binName);
+function getPrismaCliEntryPath() {
+  try {
+    return require.resolve("prisma/build/index.js");
+  } catch {
+    throw new Error("Prisma CLI not found. Run your package manager install first.");
+  }
 }
 
 function hasGeneratedClient() {
   const clientEntry = require.resolve("@prisma/client");
   const clientDir = path.dirname(clientEntry);
 
-  const generatedEntry = require.resolve(".prisma/client/default", {
+  const generatedEntry = require.resolve(".prisma/client/index", {
     paths: [clientDir],
   });
 
@@ -25,17 +28,10 @@ function main() {
     // ignore and fall through to generating
   }
 
-  const prismaGenerate = getPrismaGenerateCommand();
-
-  if (!fs.existsSync(prismaGenerate)) {
-    throw new Error(
-      `Prisma CLI not found at ${prismaGenerate}. Run your package manager install first.`
-    );
-  }
+  const prismaCliEntry = getPrismaCliEntryPath();
 
   console.log("Prisma Client not generated; running `prisma generate`...");
-  execFileSync(prismaGenerate, ["generate"], { stdio: "inherit" });
+  execFileSync(process.execPath, [prismaCliEntry, "generate"], { stdio: "inherit" });
 }
 
 main();
-
