@@ -15,7 +15,9 @@ export const options: NextAuthOptions = {
             clientId: process.env.GITHUB_ID,
             clientSecret: process.env.GITHUB_SECRET,
         }),
-        process.env.NEXTAUTH_URL?.includes("localhost") && CredentialsProvider({
+        //添加 局域网ip 192.168 或者localhost 
+        // 添加 CredentialsProvider 仅在本地开发环境中使用
+        (process.env.NEXTAUTH_URL?.includes("localhost") || process.env.NEXTAUTH_URL?.includes("192.168")) && CredentialsProvider({
             name: "Credentials",
             credentials: {
                 email: { label: "email", type: "email" },
